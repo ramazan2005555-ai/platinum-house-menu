@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Админ-панель — PLATINUM HOUSE</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  :root { --admin-bg: #f5f5f0; --admin-card: #ffffff; --admin-text: #1a1a1a; --admin-text2: #666; --admin-border: #e0e0d8; --admin-input-bg: #fafaf8; }
+  body { background: var(--admin-bg); color: var(--admin-text); }
+  .admin-page { max-width: 900px; margin: 0 auto; padding: 60px 24px; }
+  .admin-header { text-align: center; margin-bottom: 48px; }
+  .admin-header h1 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 500; color: #0a0a0a; margin-bottom: 8px; }
+  .admin-header p { font-size: 0.85rem; color: var(--admin-text2); }
+  .admin-header .back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 0.8rem; color: #c9a84c; text-decoration: none; }
+  .admin-header .back-link:hover { text-decoration: underline; }
+  .admin-card { background: var(--admin-card); border: 1px solid var(--admin-border); border-radius: 4px; padding: 32px; margin-bottom: 24px; }
+  .admin-card h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 500; margin-bottom: 4px; color: #0a0a0a; }
+  .admin-card .card-desc { font-size: 0.8rem; color: var(--admin-text2); margin-bottom: 24px; }
+  .admin-field { margin-bottom: 20px; }
+  .admin-field label { display: block; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--admin-text2); margin-bottom: 6px; }
+  .admin-field input, .admin-field textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--admin-border); border-radius: 3px; font-size: 0.9rem; font-family: 'Inter', sans-serif; background: var(--admin-input-bg); color: var(--admin-text); transition: border-color 0.2s; }
+  .admin-field input:focus, .admin-field textarea:focus { outline: none; border-color: #c9a84c; }
+  .admin-field textarea { min-height: 80px; resize: vertical; }
+  .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .image-preview { width: 100%; aspect-ratio: 3/4; background: #eee; border-radius: 3px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; border: 1px dashed var(--admin-border); position: relative; }
+  .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+  .image-preview .placeholder { font-size: 0.75rem; color: #aaa; text-align: center; padding: 20px; }
+  .image-upload-area { display: flex; gap: 8px; }
+  .image-upload-area input { flex: 1; font-size: 0.8rem; }
+  .btn-upload { padding: 10px 20px; background: #c9a84c; color: #fff; border: none; border-radius: 3px; font-size: 0.8rem; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .btn-upload:hover { background: #a8882f; }
+  .btn-save { width: 100%; padding: 14px; background: #0a0a0a; color: #fff; border: none; border-radius: 3px; font-size: 0.9rem; font-weight: 500; letter-spacing: 1px; cursor: pointer; transition: background 0.2s; text-transform: uppercase; }
+  .btn-save:hover { background: #2a2a2a; }
+  .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #0a0a0a; color: #fff; padding: 14px 28px; border-radius: 4px; font-size: 0.85rem; opacity: 0; visibility: hidden; transition: all 0.3s; z-index: 9999; }
+  .toast.show { opacity: 1; visibility: visible; }
+  .toast.success { border-left: 3px solid #4caf50; }
+  .toast.error { border-left: 3px solid #f44336; }
+  .image-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .btn-clear { padding: 6px 14px; background: none; border: 1px solid #ddd; border-radius: 3px; font-size: 0.75rem; cursor: pointer; color: #999; transition: all 0.2s; }
+  .btn-clear:hover { border-color: #f44336; color: #f44336; }
+  .admin-footer { text-align: center; padding: 24px; font-size: 0.75rem; color: var(--admin-text2); }
+  @media (max-width: 600px) { .admin-row { grid-template-columns: 1fr; } .admin-card { padding: 20px; } }
+  .import-export { display: flex; gap: 8px; margin-top: 16px; }
+  .btn-secondary { padding: 10px 20px; background: none; border: 1px solid var(--admin-border); border-radius: 3px; font-size: 0.8rem; cursor: pointer; color: var(--admin-text); transition: all 0.2s; }
+  .btn-secondary:hover { border-color: #c9a84c; color: #c9a84c; }
+</style>
+</head>
+<body>
+<div class="admin-page">
+  <div class="admin-header">
+    <h1>Панель управления</h1>
+    <p>PLATINUM HOUSE Hotel & Restaurant</p>
+    <a href="/" class="back-link">&larr; Вернуться на сайт</a>
+  </div>
+
+  <!-- Menu Images -->
+  <div class="admin-card" id="imagesCard">
+    <h2>Фотографии меню</h2>
+    <p class="card-desc">Загрузите или укажите ссылки на изображения меню (рекомендуется: JPG, WebP, не более 5 МБ)</p>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>Меню — страница 1</label>
+        <div class="image-preview" id="preview0">
+          <div class="placeholder">Нет изображения</div>
+        </div>
+        <div class="image-upload-area">
+          <input type="text" id="menuUrl0" placeholder="URL изображения или загрузите файл">
+        </div>
+        <div class="image-actions">
+          <button class="btn-upload" onclick="document.getElementById('fileInput0').click()">Загрузить файл</button>
+          <button class="btn-clear" onclick="clearImage(0)">Очистить</button>
+        </div>
+        <input type="file" id="fileInput0" accept="image/*" style="display:none">
+      </div>
+      <div class="admin-field">
+        <label>Меню — страница 2</label>
+        <div class="image-preview" id="preview1">
+          <div class="placeholder">Нет изображения</div>
+        </div>
+        <div class="image-upload-area">
+          <input type="text" id="menuUrl1" placeholder="URL изображения или загрузите файл">
+        </div>
+        <div class="image-actions">
+          <button class="btn-upload" onclick="document.getElementById('fileInput1').click()">Загрузить файл</button>
+          <button class="btn-clear" onclick="clearImage(1)">Очистить</button>
+        </div>
+        <input type="file" id="fileInput1" accept="image/*" style="display:none">
+      </div>
+    </div>
+    <div class="admin-field" style="margin-top:8px">
+      <label>Подписи к изображениям</label>
+      <div class="admin-row">
+        <input type="text" id="menuLabel0" placeholder="Подпись к фото 1">
+        <input type="text" id="menuLabel1" placeholder="Подпись к фото 2">
+      </div>
+    </div>
+  </div>
+
+  <!-- Restaurant Info -->
+  <div class="admin-card">
+    <h2>Информация о заведении</h2>
+    <p class="card-desc">Название, описание и контактные данные</p>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>Название ресторана</label>
+        <input type="text" id="restaurantName" placeholder="Grand Palace">
+      </div>
+      <div class="admin-field">
+        <label>Бейдж (верхняя подпись)</label>
+        <input type="text" id="badge" placeholder="HOTEL & RESTAURANT">
+      </div>
+    </div>
+    <div class="admin-field">
+      <label>Подзаголовок (описание)</label>
+      <input type="text" id="subtitle" placeholder="Изысканная кухня • Атмосфера роскоши">
+    </div>
+  </div>
+
+  <!-- Contacts -->
+  <div class="admin-card">
+    <h2>Контакты</h2>
+    <p class="card-desc">Адрес, телефон, email и часы работы</p>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>Адрес (текст)</label>
+        <input type="text" id="address" placeholder="г. Москва, ул. Тверская, 15">
+      </div>
+      <div class="admin-field">
+        <label>Ссылка на карту</label>
+        <input type="url" id="addressLink" placeholder="https://maps.yandex.ru">
+      </div>
+    </div>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>Телефон (отображение)</label>
+        <input type="text" id="phone" placeholder="+7 (495) 123-45-67">
+      </div>
+      <div class="admin-field">
+        <label>Телефон (для ссылки)</label>
+        <input type="text" id="phoneRaw" placeholder="+74951234567">
+      </div>
+    </div>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="info@aragy.ru">
+      </div>
+      <div class="admin-field">
+        <label>Часы работы</label>
+        <input type="text" id="hours" placeholder="Ежедневно: 07:00 — 23:00">
+      </div>
+    </div>
+    <div class="admin-field">
+      <label>Примечание к часам</label>
+      <input type="text" id="hoursNote" placeholder="Завтрак: 07:00–11:00">
+    </div>
+  </div>
+
+  <!-- Social -->
+  <div class="admin-card">
+    <h2>Социальные сети и мессенджеры</h2>
+    <p class="card-desc">Ссылки для кнопок WhatsApp, Telegram</p>
+    <div class="admin-row">
+      <div class="admin-field">
+        <label>WhatsApp (полная ссылка)</label>
+        <input type="url" id="whatsapp" placeholder="https://wa.me/74951234567">
+      </div>
+      <div class="admin-field">
+        <label>Telegram (полная ссылка)</label>
+        <input type="url" id="telegram" placeholder="https://t.me/grandpalace">
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-save" id="saveBtn" onclick="saveData()">Сохранить изменения</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
