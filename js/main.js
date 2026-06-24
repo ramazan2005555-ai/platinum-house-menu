@@ -4,7 +4,7 @@
   /* =============================
      Configuration
      ============================= */
-  const STORAGE_KEY = 'grandpalace_data';
+  const STORAGE_KEY = 'platinumhouse_data';
   const DEFAULT_DATA = {
     restaurantName: 'PLATINUM HOUSE',
     subtitle: 'Изысканная кухня • Атмосфера роскоши • Безупречный сервис',
@@ -13,11 +13,11 @@
     addressLink: 'https://maps.yandex.ru',
     phone: '+7 (495) 123-45-67',
     phoneRaw: '+74951234567',
-    email: 'info@grandpalace.ru',
+    email: 'info@platinumbouse.ru',
     hours: 'Ежедневно: 07:00 — 23:00',
     hoursNote: 'Завтрак: 07:00–11:00',
     whatsapp: 'https://wa.me/74951234567',
-    telegram: 'https://t.me/grandpalace',
+    telegram: '',
     menuImages: ['', ''],
     menuLabels: ['Меню — страница 1', 'Меню — страница 2'],
     ogImage: '/img/og-image.jpg'

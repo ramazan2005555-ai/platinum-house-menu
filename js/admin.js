@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const STORAGE_KEY = 'grandpalace_data';
+  const STORAGE_KEY = 'platinumhouse_data';
 
   const DEFAULTS = {
     restaurantName: 'PLATINUM HOUSE',
@@ -11,11 +11,11 @@
     addressLink: 'https://maps.yandex.ru',
     phone: '+7 (495) 123-45-67',
     phoneRaw: '+74951234567',
-    email: 'info@aragy.ru',
+    email: 'info@platinumbouse.ru',
     hours: 'Ежедневно: 07:00 — 23:00',
     hoursNote: 'Завтрак: 07:00–11:00',
     whatsapp: 'https://wa.me/74951234567',
-    telegram: 'https://t.me/grandpalace',
+    telegram: '',
     menuImages: ['', ''],
     menuLabels: ['Меню — страница 1', 'Меню — страница 2']
   };
@@ -157,7 +157,7 @@
     var blob = new Blob([JSON.stringify(currentData, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'grandpalace-backup.json';
+    a.download = 'platinumbouse-backup.json';
     a.click();
     URL.revokeObjectURL(a.href);
     showToast('Резервная копия скачана', 'success');

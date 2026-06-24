@@ -1,4 +1,4 @@
-const CACHE = 'grandpalace-v1';
+const CACHE = 'platinumhouse-v1';
 
 const PRECACHE = [
   '/',
